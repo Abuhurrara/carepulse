@@ -16,7 +16,7 @@ export enum FormFieldType {
   INPUT = "input",
   TEXTAREA = "textarea",
   PHONE_INPUT = "phoneinput",
-  CHECKBOX = "checkboz",
+  CHECKBOX = "checkbox",
   DATE_PICKER = "datePicker",
   SELECT = "select",
   SEKELTON = "sekelton",
@@ -41,15 +41,19 @@ const PatientForm = () => {
     phone,
   }: z.infer<typeof userFormValidation>) {
     setIsLoading(true);
+
     try {
       const userData = { name, email, phone };
       const user = await createUser(userData);
-      
+
       if (user) router.push(`/patients/${user.$id}/register`);
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoading(false);
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">

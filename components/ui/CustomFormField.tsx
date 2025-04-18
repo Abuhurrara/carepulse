@@ -62,7 +62,6 @@ const RenderField = ({
         </div>
       );
     case FormFieldType.PHONE_INPUT:
-      console.log(field)
       return (
         <FormControl>
           <PhoneInput

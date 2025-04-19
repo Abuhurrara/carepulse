@@ -15,6 +15,9 @@ import { FormFieldType } from "../forms/PatientForm";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Image from "next/image";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 interface CustomFormField {
   control: Control<any>;
@@ -38,7 +41,15 @@ const RenderField = ({
   field: any;
   props: CustomFormField;
 }) => {
-  const { fieldType, placeholder, iconSrc, iconAlt } = props;
+  const {
+    fieldType,
+    placeholder,
+    iconSrc,
+    iconAlt,
+    showTimeSelect,
+    dateFormat,
+    renderSekelton,
+  } = props;
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -84,8 +95,21 @@ const RenderField = ({
             alt="calender"
             className="ml-2"
           />
+          <FormControl>
+            <DatePicker
+              selected={field.value}
+              onChange={(date) => field.onChange(date)}
+              dateFormat={dateFormat ?? "MM/dd/yyyy"}
+              showTimeSelect={showTimeSelect ?? true}
+              timeInputLabel="Time:"
+              wrapperClassName="date-picker"
+              toggleCalendarOnIconClick
+            />
+          </FormControl>
         </div>
       );
+    case FormFieldType.SEKELTON:
+      return renderSekelton ? renderSekelton(field) : null;
     default:
       break;
   }

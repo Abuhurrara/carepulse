@@ -3,9 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import { Form, FormControl } from "@/components/ui/form";
-import CustomFormField from "../ui/CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { userFormValidation } from "@/lib/validation";
@@ -17,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Doctors, GenderOptions } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import CustomFormField from "../customFormFields";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -185,6 +184,44 @@ const RegisterForm = ({ user }: { user: User }) => {
             </SelectItem>
           ))}
         </CustomFormField>
+
+        {/* INSURANCE & POLICY NUMBER */}
+        <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="insuranceProvider"
+              label="Insurance provider"
+              placeholder="BlueCross BlueShield"
+            />
+
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="insurancePolicyNumber"
+              label="Insurance policy number"
+              placeholder="ABC123456789"
+            />
+          </div>
+
+          {/* ALLERGY & CURRENT MEDICATIONS */}
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              control={form.control}
+              name="allergies"
+              label="Allergies (if any)"
+              placeholder="Peanuts, Penicillin, Pollen"
+            />
+
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              control={form.control}
+              name="currentMedication"
+              label="Current medications"
+              placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
+            />
+          </div>
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>

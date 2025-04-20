@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control, Form } from "react-hook-form";
-import { FormFieldType } from "../forms/PatientForm";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Image from "next/image";
@@ -25,6 +24,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { FormFieldType } from "./forms/PatientForm";
+import { Textarea } from "./ui/textarea";
 
 interface CustomFormField {
   control: Control<any>;
@@ -59,6 +60,17 @@ const RenderField = ({
     renderSekelton,
   } = props;
   switch (fieldType) {
+    case FormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            className="shad-textArea"
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
     case FormFieldType.INPUT:
       return (
         <div className="flex rounded-md border border-dark-500 bg-dark-400">
@@ -108,7 +120,7 @@ const RenderField = ({
               selected={field.value}
               onChange={(date) => field.onChange(date)}
               dateFormat={dateFormat ?? "MM/dd/yyyy"}
-              showTimeSelect={showTimeSelect ?? true}
+              showTimeSelect={showTimeSelect ?? false}
               timeInputLabel="Time:"
               wrapperClassName="date-picker"
               toggleCalendarOnIconClick

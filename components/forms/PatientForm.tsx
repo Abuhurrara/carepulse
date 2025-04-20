@@ -10,7 +10,7 @@ import { useState } from "react";
 import { userFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
-import CustomFormField from "../customFormFields";
+import CustomFormField from "../CustomFormField";
 
 export enum FormFieldType {
   INPUT = "input",

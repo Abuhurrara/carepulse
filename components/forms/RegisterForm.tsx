@@ -16,6 +16,7 @@ import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import CustomFormField from "../CustomFormField";
+import FileUploader from "../FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -275,20 +276,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           label="Scanned copy of identification document"
           renderSekelton={(field) => (
             <FormControl>
-              <RadioGroup
-                className="flex h-11 gap-6 xl:justify-between"
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                {GenderOptions.map((option, i) => (
-                  <div key={option + i} className="radio-group">
-                    <RadioGroupItem value={option} id={option} />
-                    <Label htmlFor={option} className="cursor-pointer">
-                      {option}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
+              <FileUploader files={field.value} onChange={field.onChange} />
             </FormControl>
           )}
         />

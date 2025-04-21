@@ -32,6 +32,10 @@ export const getUser = async (userId: string) => {
     return parseStringify(user);
   } catch (error: any) {
     console.log("Error fetching user", error);
-    
   }
-}
+};
+
+export const registerPatient = async ({
+  identificationDocument,
+  ...patient
+}: RegisterUserParams) => {};

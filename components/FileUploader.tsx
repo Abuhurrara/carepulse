@@ -15,10 +15,6 @@ const FileUploader = ({ files, onChange }: FileUploadProps) => {
     onChange(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-  console.log(
-    "fileURl",
-    files && files[0] ? convertFileToUrl(files[0]) : "No file available"
-  );
 
   return (
     <div {...getRootProps()} className="file-upload">

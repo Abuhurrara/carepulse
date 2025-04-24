@@ -50,13 +50,22 @@ const RegisterForm = ({ user }: { user: User }) => {
       values.identificationDocument &&
       values.identificationDocument?.length > 0
     ) {
-      const blobFile = new Blob([values.identificationDocument[0]], {
-        type: values.identificationDocument[0].type,
+      const file = values.identificationDocument[0];
+      if (file.size === 0) {
+        console.error("File is empty");
+        return;
+      }
+
+      const blobFile = new Blob([file], {
+        type: file.type,
       });
+
+      console.log("File details:", file);
 
       formData = new FormData();
       formData.append("blobFile", blobFile);
-      formData.append("fileName", values.identificationDocument[0].name);
+      formData.append("fileName", file.name);
+      console.log("FormData contents:", formData.get("blobFile"), formData.get("fileName"));
     }
 
     try {
@@ -74,7 +83,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         router.push(`/patients/${user.$id}/new-appointment`);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error during form submission:", error);
     }
 
     setIsLoading(false);

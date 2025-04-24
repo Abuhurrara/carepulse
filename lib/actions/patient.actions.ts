@@ -1,6 +1,6 @@
 "use server";
 
-import { ID, Query } from "node-appwrite";
+import { ID, InputFile, Query } from "node-appwrite";
 import {
   BUCKET_ID,
   DATABASE_ID,
@@ -12,7 +12,6 @@ import {
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { InputFile } from "node-appwrite/file";
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -50,12 +49,20 @@ export const registerPatient = async ({
   ...patient
 }: RegisterUserParams) => {
   try {
+    if (
+      !identificationDocument?.get("blobFile") ||
+      !identificationDocument?.get("fileName")
+    ) {
+      throw new Error("Invalid identification document");
+    }
     let file;
     if (identificationDocument) {
-      const inputFile = InputFile.fromBuffer(
-        identificationDocument?.get("blobFile") as Blob,
-        identificationDocument?.get("fileName") as string
-      );
+      const inputFile =
+        identificationDocument &&
+        InputFile.fromBlob(
+          identificationDocument?.get("blobFile") as Blob,
+          identificationDocument?.get("fileName") as string
+        );
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
     }
     const newPatient = await databases.createDocument(
@@ -71,6 +78,7 @@ export const registerPatient = async ({
 
     return parseStringify(newPatient);
   } catch (error) {
-    console.log(error);
+    console.error("Error during patient registration:", error);
+    throw error; // Re-throw the error for further handling
   }
 };

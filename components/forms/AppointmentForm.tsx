@@ -42,39 +42,41 @@ const AppointmentForm = ({
     },
   });
 
-  let status;
-  switch (type) {
-    case "schedule":
-      status = "Scheduled";
-      break;
-    case "cancel":
-      status = "Cancelled";
-      break;
-    default:
-      status = "Pending";
-      break;
-  }
-
-  async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
+  const onSubmit = async (
+    values: z.infer<typeof AppointmentFormValidation>
+  ) => {
     setIsLoading(true);
+
+    let status;
+    switch (type) {
+      case "schedule":
+        status = "scheduled";
+        break;
+      case "cancel":
+        status = "cancelled";
+        break;
+      default:
+        status = "pending";
+    }
+
     try {
       if (type === "create" && patientId) {
-        const appointmentData = {
+        const appointment = {
           userId,
           patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason: values.reason,
-          note: values.note,
+          reason: values.reason!,
           status: status as Status,
+          note: values.note,
         };
 
-        const appointment = await createAppointment(appointmentData);
+        const newAppointment = await createAppointment(appointment);
 
         if (appointment) {
           form.reset();
           router.push(
-            `/patients/${userId}/new-appointment/success?appoinmtmentId=${appointment.$id}`
+            `/patients/${userId}/new-appointment/success?appoinmtmentId=${newAppointment.$id}`
           );
         }
       }
@@ -83,7 +85,7 @@ const AppointmentForm = ({
     }
 
     setIsLoading(false);
-  }
+  };
 
   let buttonLabel;
   switch (type) {

@@ -30,6 +30,9 @@ const Success = () => {
           </h2>
           <p>We'ill be in touch shortly to confirm.</p>
         </section>
+        <section className="request-details">
+            <p>Requested appointment details: </p>
+        </section>
       </div>
     </div>
   );

@@ -66,11 +66,11 @@ const Success = async ({
             <p>{formatDateTime(appointment.schedule).dateTime}</p>
           </div>
         </section>
-        <Button variant="outline" className="shad-primary-btn" asChild>
-          <Link href={`/patients/${userId}/new-appointment`}>
+        <Link href={`/patients/${userId}/new-appointment`}>
+          <Button variant="outline" className="shad-primary-btn">
             New Appointment
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -10,11 +10,12 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import CustomFormField from "../CustomFormField";
-import { UserFormValidation } from "@/lib/validation";
+import { getAppointmentSchema } from "@/lib/validation";
 import { FormFieldType } from "./PatientForm";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import { createAppointment } from "@/lib/actions/appointment.actions";
 
 const AppointmentForm = ({
   userId,
@@ -28,8 +29,10 @@ const AppointmentForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const AppointmentFormValidation = getAppointmentSchema(type);
+
+  const form = useForm<z.infer<typeof AppointmentFormValidation>>({
+    resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
       primaryPhysician: "",
       schedule: new Date(),
@@ -52,7 +55,7 @@ const AppointmentForm = ({
       break;
   }
 
-  async function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
     setIsLoading(true);
     try {
       if (type === "create" && patientId) {
@@ -65,6 +68,15 @@ const AppointmentForm = ({
           note: values.note,
           status: status as Status,
         };
+
+        const appointment = await createAppointment(appointmentData);
+
+        if (appointment) {
+          form.reset();
+          router.push(
+            `/patients/${userId}/new-appointment/success?appoinmtmentId=${appointment.$id}`
+          );
+        }
       }
     } catch (error) {
       console.log("Error creating appointment", error);

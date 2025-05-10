@@ -2,12 +2,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import StatCard from "@/components/StatCard";
-import { columns, Payment } from "@/components/table/columns";
+import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
 const Admin = async () => {
-  const appointments = await getRecentAppointmentList();  
+  const appointments = await getRecentAppointmentList();
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
